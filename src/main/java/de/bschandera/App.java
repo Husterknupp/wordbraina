@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
  * expected matrix size
  * word length L of dictionary words
  * character matrix (rows can be of different length
- * <p>
+ * <p/>
  * OUTPUT:
  * all words
  * - found in a given dictionary
  * - with the exact length L
  * - that are applicable as a graph in the given matrix
- * <p>
- * <p>
+ * <p/>
+ * <p/>
  * A   |    B
  * ____|_____
  *     |
@@ -50,7 +50,7 @@ public class App {
         System.out.println("[INFO] " + matrix.get().getFields().size() + "-Felder Matrix " +
                 "und " + wordLength + "-Buchstaben Wörter gesucht.. alles klar.");
         List<String> result = findDictionaryWords(wordLength, matrix.get());
-        if (!(result.size() > 0)) {
+        if (result.size() == 0) {
             System.out.println("Keine Wörter gefunden :-/");
         } else {
             System.out.println(result);
