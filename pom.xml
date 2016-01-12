@@ -4,7 +4,7 @@
     <groupId>de.bschandera</groupId>
     <artifactId>wordbraina</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
     <name>wordbraina</name>
     <properties>
         <jar.name>wordbraina</jar.name>
