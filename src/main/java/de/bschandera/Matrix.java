@@ -105,12 +105,13 @@ public class Matrix {
             System.out.println("[FEHLER] Das ist keine Zahl");
             return Optional.empty();
         }
-        String[][] rows = new String[rowCount][];
+        System.out.println("Jetzt Zeile fuer Zeile. Mit [ENTER] kommst du in die naechste Zeile.");
+	 String[][] rows = new String[rowCount][];
         for (int i = 0; i < rowCount; i++) {
             char[] row = System.console().readLine().toCharArray();
             rows[i] = toStringArray(row);
         }
-        return Optional.of(new Matrix(rows));
+	 return Optional.of(new Matrix(rows));
     }
 
     private static String[] toStringArray(char[] chars) {
