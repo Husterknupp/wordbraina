@@ -1,4 +1,7 @@
-language: nodejs
+language: node_js
+node_js:
+  - "node"
+  - "iojs"
 cache:
   directories:
-  - node dependencies
+  - $HOME/.npm
