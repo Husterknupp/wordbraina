@@ -1,0 +1,7 @@
+{
+  "name": "wordbraina",
+  "description": "A Node.js app for solving word puzzles using Express 4",
+  "repository": "https://github.com/Husterknupp/wordbraina",
+  "logo": "",
+  "image": "heroku/nodejs"
+}

@@ -1,6 +1,4 @@
-language: java
-jdk:
-  - oraclejdk8
+language: nodejs
 cache:
   directories:
-  - $HOME/.m2
+  - node dependencies
