@@ -25,5 +25,11 @@
     "static",
     "express"
   ],
-  "license": "todo"
+  "license": "todo",
+  "devDependencies": {
+    "jasmine": "^2.4.1"
+  },
+  "scripts": { 
+    "test" : "jasmine"
+  }
 }
