@@ -4,10 +4,13 @@
   "description": "A Node.js app for solving word puzzles using Express 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test" : "jasmine"
   },
   "dependencies": {
-    "express": "4.13.3"
+    "express": "4.13.3",
+    "body-parser": "1.14.2",
+    "underscore": "1.8.3"
   },
   "engines": {
     "node": "0.12.7"
@@ -28,8 +31,5 @@
   "license": "todo",
   "devDependencies": {
     "jasmine": "^2.4.1"
-  },
-  "scripts": { 
-    "test" : "jasmine"
   }
 }
