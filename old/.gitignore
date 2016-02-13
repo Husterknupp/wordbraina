@@ -1,8 +1,0 @@
-# java, maven and ide
-*.idea
-*.iml
-*.class
-*.jar
-target/
-dependency-reduced-pom.xml
-
