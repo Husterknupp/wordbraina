@@ -18,7 +18,7 @@ app.get("/", function (req, res) {
 app.post("/puzzles", function (req, res) {
     //req.body.lines;
     //var matrix = initMatrix(req.body.lines);
-    res.write("matrix initialized and neighbours found");
+    res.send("matrix initialized and neighbours found\n");
 
     //res.json(req.body);
     //res.setHeader('Content-Type', 'application/json')
