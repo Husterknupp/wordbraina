@@ -1,7 +1,9 @@
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-    _ = require("underscore");
+    _ = require("underscore"),
+    uuid = require("uuid"),
+    puzzles = {};
 
 app.set("port", (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -14,9 +16,18 @@ app.get("/", function (req, res) {
     res.send("<h1>Hello, World!</h1>");
 });
 
-// todo return a real saved puzzle
 app.get("/puzzles/:id", function (req, res) {
-    res.send("puzzle " + req.params.id)
+    if (!puzzles.hasOwnProperty(req.params.id)) {
+        res.send("no puzzle for id " + req.params.id);
+        return;
+    }
+    var matrix = puzzles[req.params.id];
+    var matrixNoNeighbours = _.map(matrix.rows, function (row) {
+        return _.map(row, function (field) {
+            return {value: field.value, x: field.x, y: field.y};
+        });
+    });
+    res.send(matrixNoNeighbours);
 });
 
 // todo implement word finding
@@ -59,8 +70,8 @@ function addNeighboursDependingOnPosition(field, matrix) {
     }
 }
 
+// todo consider matrix as a class
 var index = {
-    // todo consider matrix as a class
     initMatrix: function initMatrix(lines) {
         var rows = [];
         var y = 0;
@@ -91,17 +102,11 @@ var index = {
         return matrix;
     }
 };
+module.exports = index;
 
-// todo store the puzzle into ram with id
-// todo return that id
 app.post("/puzzles", function (req, res) {
     var matrix = index.initNeighbours(index.initMatrix(req.body.lines));
-    var matrixNoNeighbours = _.map(matrix.rows, function (row) {
-        return _.map(row, function (field) {
-            return {value: field.value, x: field.x, y: field.y};
-        });
-    });
-    res.send(matrixNoNeighbours);
+    var id = uuid.v1();
+    puzzles[id] = matrix;
+    res.send(id);
 });
-
-module.exports = index;
