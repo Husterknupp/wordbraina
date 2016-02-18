@@ -18,7 +18,7 @@ app.get("/", function (req, res) {
 
 app.get("/puzzles/:id", function (req, res) {
     if (!puzzles.hasOwnProperty(req.params.id)) {
-        res.send("no puzzle for id " + req.params.id);
+        res.status(404).send("no puzzle for id " + req.params.id);
         return;
     }
     var matrix = puzzles[req.params.id];
