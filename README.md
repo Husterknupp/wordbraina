@@ -3,7 +3,7 @@ Helper for [WORDBRAIN](https://itunes.apple.com/de/app/wordbrain/id708600202?mt=
 
 _Deutsch_ Brauchst du Hilfe beim WORDBRAIN Spiel? wordbraina findet alle Wörter, die sich in einem Spiel versteckt haben, für dich und zeigt sie dir in einer Liste an.
 
-[![Build Status](https://travis-ci.org/Husterknupp/wordbraina.svg)](https://travis-ci.org/Husterknupp/wordbraina)
+[![Build Status](https://travis-ci.org/Husterknupp/wordbraina.svg?branch=node)](https://travis-ci.org/Husterknupp/wordbraina)
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/be69f532f91f44c1aaa935a20eb92061)](https://www.codacy.com/app/4-23/wordbraina)
 
 ## What?
