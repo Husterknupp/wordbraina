@@ -16,10 +16,11 @@ sleep 2
 echo 'node integration-test.js'
 if node integration-test.js; then
     echo 'pkill -9 node index.js'
-    pkill -9 'node index.js'
+    pkill -9 node index.js
+    exit 0
 else
     echo 'Tests not successful'
     echo 'pkill -9 node index.js'
-    pkill -9 'node index.js'
+    pkill -9 node index.js
     exit 1
 fi
