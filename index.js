@@ -33,7 +33,7 @@ app.get("/puzzles/:id", function (req, res) {
 
 // todo implement word finding
 app.get("/puzzles/:id/words", function (req, res) {
-    res.send("puzzle " + req.params.id)
+    res.send("puzzle " + req.params.id);
 });
 
 function findNeighbourInRow(row, x, y) {
@@ -81,14 +81,14 @@ var index = {
             var newLine = [];
             _.forEach(line, function (letter) {
                 if (letter.trim() !== "") {
-                    newLine.push({value: letter.trim(), neighbours: [], x: x, y: y});
+                    newLine.push({value: letter.trim(), neighbours: [], x, y});
                 }
                 x++;
             });
             rows.push(newLine);
             y++;
         });
-        return {rows: rows, rowCount: y};
+        return {rows, rowCount: y};
     },
 
     initNeighbours: function initNeighbours(matrix) {
