@@ -25,12 +25,12 @@ request
                 if (res.statusCode !== 200) {
                     throw "Wrong status code " + res.statusCode;
                 }
-                var expected = [
+                var expected = JSON.stringify([
                     [{"value": "a", "x": 0, "y": 0}, {"value": "f", "x": 1, "y": 0}],
-                    [{"value": "f", "x": 0, "y": 1}, {"value": "e", "x": 1, "y": 1}]];
-                if (_.isEqual(res.text, expected)) {
+                    [{"value": "f", "x": 0, "y": 1}, {"value": "e", "x": 1, "y": 1}]]);
+                if (!_.isEqual(res.text, expected)) {
                     throw "Puzzles not equal\n" +
-                    "Expected: " + JSON.stringify(expected) + "\n" +
+                    "Expected: " + expected + "\n" +
                     "Actual:   " + res.text;
                 }
                 console.log("Result is as expected.\n\nP U R F E C T !!\n");
