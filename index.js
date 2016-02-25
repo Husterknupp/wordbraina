@@ -43,3 +43,18 @@ app.post("/puzzles", function (req, res) {
 app.get("/puzzles/:id/words", function (req, res) {
     res.send("puzzle " + req.params.id);
 });
+
+function walkToNeighbours(paths) {
+    var result = new Set();
+    _.forEach(paths, function(path) {
+        path.tail().neighbours.forEach(function(neighbour) {
+            var newPath = path.walkToIfUnknown(neighbour);
+            if (newPath !== null) {
+                result.add(newPath);
+            }
+        });
+    });
+    return result;
+}
+
+exports.walkToNeighbours = walkToNeighbours;

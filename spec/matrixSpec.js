@@ -65,6 +65,9 @@ describe("initNeighbours", function () {
             return field.value === "d";
         });
         expect(d).toBeDefined();
+        expect(_.find(a.neighbours, function (field) {
+            return field.value === "a";
+        })).toBeUndefined();
 
         var a1 = _.find(b.neighbours, function (field) {
             return field.value === "a";
