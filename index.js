@@ -3,8 +3,19 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     _ = require("underscore"),
     uuid = require("uuid"),
+    readline = require("readline"),
+    fs = require("fs"),
     matrixClass = require("./lib/matrix"),
     puzzles = {};
+
+var rl = readline.createInterface({
+    input: fs.createReadStream('dictionary-de')
+});
+
+var dictionary = [];
+rl.on('line', (word) => {
+    dictionary.push(word.toLowerCase());
+});
 
 app.set("port", (process.env.PORT || 5000));
 app.use(bodyParser.json());
@@ -39,9 +50,34 @@ app.post("/puzzles", function (req, res) {
     res.send(id);
 });
 
-// todo implement word finding
 app.get("/puzzles/:id/words", function (req, res) {
-    res.send("puzzle " + req.params.id);
+    if (!puzzles.hasOwnProperty(req.params.id)) {
+        res.status(404).send("no puzzle for id " + req.params.id);
+        return;
+    }
+    if(!req.query.length) {
+        res.status(400).send("query param length required");
+        return;
+    }
+    var result = findDictionaryWords(puzzles[req.params.id], req.query.length, dictionary);
+    res.send(result);
+});
+
+app.get("/puzzles/:id/tokens", function(req, res) {
+    if (!puzzles.hasOwnProperty(req.params.id)) {
+        res.status(404).send("no puzzle for id " + req.params.id);
+        return;
+    }
+    if (!req.query.length) {
+        res.status(400).send("query param length required");
+        return;
+    }
+    var result = findPossibleTokens(puzzles[req.params.id], req.query.length);
+    res.send(result);
+});
+
+app.get("/dictionary", function(req, res) {
+    res.send({wordCount: dictionary.length});
 });
 
 function walkToNeighbours(paths) {
@@ -60,7 +96,7 @@ function walkToNeighbours(paths) {
 function findPossibleTokens(matrix, wordLength) {
     var noOfFields = 0;
     matrix.rows.forEach(function(row) {
-        row.forEach(function(field) {
+        row.forEach(function() {
             noOfFields++;
         })
     });
@@ -81,5 +117,20 @@ function findPossibleTokens(matrix, wordLength) {
     return result;
 }
 
+function findDictionaryWords(matrix, wordLength, dictionary) {
+    var token = findPossibleTokens(matrix, wordLength);
+    var result = [];
+    token.forEach(function(token) {
+        if (dictionary.indexOf(token.toLowerCase()) != -1
+            && result.indexOf(token) == -1) {
+            result.push(token);
+        }
+    });
+    return result;
+}
+
+// todo move methods into matrix class
+// todo rename matrix class to puzzle
 exports.walkToNeighbours = walkToNeighbours;
 exports.findPossibleTokens = findPossibleTokens;
+exports.findDictionaryWords = findDictionaryWords;

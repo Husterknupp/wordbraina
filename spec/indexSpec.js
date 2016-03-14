@@ -41,5 +41,40 @@ describe("index", function() {
             expect(possibleTokensAsSet.size).toEqual(possibleTokens.length);
         });
     });
-});
 
+    describe("findDictionaryWords", function() {
+        it("should find \'spaß\'", function() {
+            var matrix = matrixClass([["s", "p"], ["a", "ß"]]);
+            matrix.initNeighbours();
+
+            var dictionaryWords = app.findDictionaryWords(matrix, 4, ["baum", "kiffer", "ast", "spaß"]);
+            expect(dictionaryWords).toContain("spaß");
+            expect(dictionaryWords.length).toEqual(1);
+
+            dictionaryWords = app.findDictionaryWords(matrix, 4, ["baum", "kiffer", "ast"]);
+            expect(dictionaryWords).not.toContain("spaß");
+            expect(dictionaryWords.length).toEqual(0);
+
+            dictionaryWords = app.findDictionaryWords(matrix, 3, ["aps", "kiffer", "ast", "spaß"]);
+            expect(dictionaryWords).toContain("aps");
+            expect(dictionaryWords.length).toEqual(1);
+        });
+
+        it("should not be case sensitive", function() {
+            var matrix = matrixClass([["s", "p"], ["a", "ß"]]);
+            matrix.initNeighbours();
+
+            dictionaryWords = app.findDictionaryWords(matrix, 4, ["Spaß"]);
+            expect(dictionaryWords).toContain("spaß");
+            expect(dictionaryWords.length).toEqual(1);
+
+            var dictionaryWords = app.findDictionaryWords(matrix, 4, ["SPAß"]);
+            expect(dictionaryWords).toContain("spaß");
+            expect(dictionaryWords.length).toEqual(1);
+
+            dictionaryWords = app.findDictionaryWords(matrix, 4, ["spaß"]);
+            expect(dictionaryWords).toContain("spaß");
+            expect(dictionaryWords.length).toEqual(1);
+        });
+    });
+});
