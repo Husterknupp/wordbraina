@@ -61,18 +61,21 @@ describe("index", function() {
         });
 
         it("should not be case sensitive", function() {
-            var matrix = matrixClass([["s", "p"], ["a", "ß"]]);
-            matrix.initNeighbours();
+            var Spaß = matrixClass([["S", "p"], ["a", "ß"]]);
+            Spaß.initNeighbours();
+            dictionaryWords = app.findDictionaryWords(Spaß, 4, ["spaß"]);
+            expect(dictionaryWords.length).toEqual(1);
+            expect(dictionaryWords).toContain("Spaß");
 
-            dictionaryWords = app.findDictionaryWords(matrix, 4, ["Spaß"]);
-            expect(dictionaryWords).toContain("spaß");
+            var SPAß = matrixClass([["S", "P"], ["A", "ß"]]);
+            SPAß.initNeighbours();
+            var dictionaryWords = app.findDictionaryWords(SPAß, 4, ["spaß"]);
+            expect(dictionaryWords).toContain("SPAß");
             expect(dictionaryWords.length).toEqual(1);
 
-            var dictionaryWords = app.findDictionaryWords(matrix, 4, ["SPAß"]);
-            expect(dictionaryWords).toContain("spaß");
-            expect(dictionaryWords.length).toEqual(1);
-
-            dictionaryWords = app.findDictionaryWords(matrix, 4, ["spaß"]);
+            var spaß = matrixClass([["s", "p"], ["a", "ß"]]);
+            spaß.initNeighbours();
+            dictionaryWords = app.findDictionaryWords(spaß, 4, ["spaß"]);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
         });
