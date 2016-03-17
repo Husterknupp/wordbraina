@@ -1,6 +1,6 @@
 'use strict';
-var Matrix = require("./../lib/puzzle").Puzzle;
-_ = require("underscore");
+var Matrix = require("./../lib/puzzle").Puzzle,
+    _ = require("underscore");
 
 describe("matrix", function() {
     describe("initialization", function() {

@@ -1,5 +1,5 @@
 'use strict';
-var Path = require("./../lib/path").Path;
+var Path = require("./../lib/path").Path,
     _ = require("underscore");
 
 describe("path to", function() {
