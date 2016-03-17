@@ -1,7 +1,9 @@
-var _matrix = require("./../lib/matrix");
-    _ = require("underscore");
+'use strict';
+var Matrix = require("./../lib/puzzle").Puzzle;
+_ = require("underscore");
+
 describe("matrix", function() {
-    describe("initMatrix", function() {
+    describe("initialization", function() {
         it("should instantiate fields properly and ignore empty fields", function() {
             var expectedValuesWithNeighbours = {
                 rows: [
@@ -10,10 +12,18 @@ describe("matrix", function() {
                     [{value: "e", neighbours: [], x: 1, y: 1}]
                 ], rowCount: 2
             };
-            var actual = _matrix([
+
+            var actual = new Matrix([
                 ["a", "f"],
                 ["", "e"]
             ]);
+            actual.rows = _.map(actual.rows, function(row) {
+                row.forEach(function(field) {
+                    field.neighbours = [];
+                });
+                return row;
+            });
+
             expect(actual.rows).toEqual(expectedValuesWithNeighbours.rows);
             expect(actual.rowCount).toEqual(expectedValuesWithNeighbours.rowCount);
         });
@@ -25,32 +35,33 @@ describe("matrix", function() {
                     [{value: "e", neighbours: [], x: 1, y: 1}]
                 ], rowCount: 2
             };
-            var actual = _matrix([
+
+            var actual = new Matrix([
                 [" ", "f"],
                 ["  ", "e"]
             ]);
+            actual.rows = _.map(actual.rows, function(row) {
+                row.forEach(function(field) {
+                    field.neighbours = [];
+                });
+                return row;
+            });
+
             expect(actual.rows).toEqual(expectedValuesWithNeighbours.rows);
             expect(actual.rowCount).toEqual(expectedValuesWithNeighbours.rowCount);
         });
 
         it("should handle empty matrix", function() {
-            var actual = _matrix([]);
+            var actual = new Matrix([]);
             expect(actual.rows).toEqual([]);
             expect(actual.rowCount).toEqual(0);
         });
-    });
 
-    describe("initNeighbours", function() {
         it("should put as neighbour each field left, right, below, above", function() {
-            var actual = _matrix([]);
-            actual.rows = [
-                [{value: "a", neighbours: [], x: 0, y: 0},
-                    {value: "b", neighbours: [], x: 1, y: 0}],
-                [{value: "c", neighbours: [], x: 0, y: 1},
-                    {value: "d", neighbours: [], x: 1, y: 1}]
-            ];
-            actual.rowCount = 2;
-            actual.initNeighbours();
+            var actual = new Matrix([
+                ["a", "b"],
+                ["c", "d"]
+            ]);
 
             var a = actual.rows[0][0];
             var b = _.find(a.neighbours, function(field) {
@@ -84,59 +95,32 @@ describe("matrix", function() {
         });
 
         it("should not add field of next +1 row as neighbour", function() {
-            var actual = _matrix();
-            actual.rows = [
-                [{value: "a", neighbours: [], x: 0, y: 0}],
+            var actual = new Matrix([
+                ["a"],
                 [],
-                [{value: "c", neighbours: [], x: 0, y: 2}]
-            ];
+                ["c"]
+            ]);
 
-            actual.initNeighbours();
+            actual.initNeighbours(); // todo remove?
             var a = actual.rows[0][0];
             expect(a.neighbours).toEqual([]);
         });
 
         it("should not add field of same row, two right as neighbour", function() {
-            var actual = _matrix();
-            actual.rows = [
-                [{value: "a", neighbours: [], x: 0, y: 0}, {value: "a", neighbours: [], x: 0, y: 2}]
-            ];
-            actual.initNeighbours();
+            var actual = new Matrix([
+                ["a", "", "a"]
+            ]);
             var a = actual.rows[0][0];
             expect(a.neighbours).toEqual([]);
         });
 
     });
 
-    describe("walkToNeighbours", function() {
-        it("should create 12 paths", function() {
-            var matrix = _matrix([["a", "b"], ["c", "d"]]);
-            matrix.initNeighbours();
-            var initialPaths = matrix.getFieldsAsPath();
-
-            var newPaths = matrix.walkToNeighbours(initialPaths);
-
-            expect(newPaths.size).toEqual(12);
-            newPaths.forEach(function(path) {
-                expect(path.path.length).toEqual(2);
-            });
-            var startingFromA = [];
-            newPaths.forEach(function(path) {
-                if (path.path[0].value === "a") {
-                    startingFromA.push(path);
-                }
-            });
-            expect(startingFromA.length).toEqual(3);
-        });
-    });
-
     describe("findPossibleTokens", function() {
         it("should find expected tokens for a 2 x 2 matrix", function() {
-            var matrix = _matrix([["a", "l"], ["k", "o"]]);
-            matrix.initNeighbours();
+            var matrix = new Matrix([["a", "l"], ["k", "o"]]);
 
             var possibleTokens = matrix.findPossibleTokens(4);
-            // [ 'a', 'l', 'k', 'o' ] => [ "alok", "alko", "akol", "aklo", "a.. ]
             var possibleTokensAsSet = new Set(possibleTokens);
 
             expect(possibleTokens.length).toEqual(4 * 6);
@@ -146,43 +130,43 @@ describe("matrix", function() {
                 "kola", "koal", "kalo", "kaol", "klao", "kloa",
                 "okal", "okla", "olak", "olka", "oalk", "oakl"]));
             expect(possibleTokensAsSet.size).toEqual(possibleTokens.length);
+
+
+            expect(matrix.findPossibleTokens(2).length).toEqual(4 * 3);
         });
     });
 
     describe("findDictionaryWords", function() {
         it("should find \'spaß\'", function() {
-            var matrix = _matrix([["s", "p"], ["a", "ß"]]);
-            matrix.initNeighbours();
-
-            var dictionaryWords = matrix.findDictionaryWords(4, ["baum", "kiffer", "ast", "spaß"]);
+            var matrix = new Matrix([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast", "spaß"]);
+            var dictionaryWords = matrix.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
 
-            dictionaryWords = matrix.findDictionaryWords(4, ["baum", "kiffer", "ast"]);
+            matrix = new Matrix([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast"]);
+            dictionaryWords = matrix.findDictionaryWords(4);
             expect(dictionaryWords).not.toContain("spaß");
             expect(dictionaryWords.length).toEqual(0);
 
-            dictionaryWords = matrix.findDictionaryWords(3, ["aps", "kiffer", "ast", "spaß"]);
+            matrix = new Matrix([["s", "p"], ["a", "ß"]], ["aps", "kiffer", "ast", "spaß"]);
+            dictionaryWords = matrix.findDictionaryWords(3);
             expect(dictionaryWords).toContain("aps");
             expect(dictionaryWords.length).toEqual(1);
         });
 
         it("should not be case sensitive", function() {
-            var Spaß = _matrix([["S", "p"], ["a", "ß"]]);
-            Spaß.initNeighbours();
-            dictionaryWords = Spaß.findDictionaryWords(4, ["spaß"]);
+            var Spaß = new Matrix([["S", "p"], ["a", "ß"]], ["spaß"]);
+            dictionaryWords = Spaß.findDictionaryWords(4);
             expect(dictionaryWords.length).toEqual(1);
             expect(dictionaryWords).toContain("Spaß");
 
-            var SPAß = _matrix([["S", "P"], ["A", "ß"]]);
-            SPAß.initNeighbours();
-            var dictionaryWords = SPAß.findDictionaryWords(4, ["spaß"]);
+            var SPAß = new Matrix([["S", "P"], ["A", "ß"]], ["spaß"]);
+            var dictionaryWords = SPAß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("SPAß");
             expect(dictionaryWords.length).toEqual(1);
 
-            var spaß = _matrix([["s", "p"], ["a", "ß"]]);
-            spaß.initNeighbours();
-            dictionaryWords = spaß.findDictionaryWords(4, ["spaß"]);
+            var spaß = new Matrix([["s", "p"], ["a", "ß"]], ["spaß"]);
+            dictionaryWords = spaß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
         });
