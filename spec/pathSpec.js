@@ -1,6 +1,5 @@
-'use strict';
-var Path = require("./../lib/path").Path,
-    _ = require("underscore");
+"use strict";
+var Path = require("./../lib/path").Path;
 
 describe("path to", function() {
     it("should ad an additional field to the path to the end", function() {
@@ -18,8 +17,8 @@ describe("path to", function() {
 
     it("should return class Path", function() {
         var path = new Path({a: 1});
-        expect(path.constructor.name).toEqual('Path');
+        expect(path.constructor.name).toEqual("Path");
         var to = path.to({b: 2});
-        expect(to.constructor.name).toEqual('Path');
+        expect(to.constructor.name).toEqual("Path");
     });
 });

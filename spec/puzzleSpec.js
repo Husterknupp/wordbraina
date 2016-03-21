@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var Puzzle = require("./../lib/puzzle").Puzzle,
     _ = require("underscore");
 
@@ -134,6 +134,12 @@ describe("Puzzle", function() {
 
             expect(puzzle.findPossibleTokens(2).length).toEqual(4 * 3);
         });
+
+        it("should exclude duplicates", function() {
+            var puzzle = new Puzzle([["a", "a"], ["b", "b"]]);
+            var tokens = puzzle.findPossibleTokens(2);
+            expect(tokens).toEqual(["aa", "ab", "bb", "ba"]);
+        });
     });
 
     describe("findDictionaryWords", function() {
@@ -156,12 +162,12 @@ describe("Puzzle", function() {
 
         it("should not be case sensitive", function() {
             var Spaß = new Puzzle([["S", "p"], ["a", "ß"]], ["spaß"]);
-            dictionaryWords = Spaß.findDictionaryWords(4);
+            var dictionaryWords = Spaß.findDictionaryWords(4);
             expect(dictionaryWords.length).toEqual(1);
             expect(dictionaryWords).toContain("Spaß");
 
             var SPAß = new Puzzle([["S", "P"], ["A", "ß"]], ["spaß"]);
-            var dictionaryWords = SPAß.findDictionaryWords(4);
+            dictionaryWords = SPAß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("SPAß");
             expect(dictionaryWords.length).toEqual(1);
 

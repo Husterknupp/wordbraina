@@ -1,7 +1,6 @@
 var express = require("express"),
     app = express(),
     bodyParser = require("body-parser"),
-    _ = require("underscore"),
     uuid = require("uuid"),
     readline = require("readline"),
     fs = require("fs"),
@@ -14,8 +13,8 @@ var express = require("express"),
 var puzzles = {};
 var dictionary = [];
 readline.createInterface({
-    input: fs.createReadStream('dictionary-de')
-}).on('line', word => {
+    input: fs.createReadStream("dictionary-de")
+}).on("line", (word) => {
     dictionary.push(word.toLowerCase());
 });
 
