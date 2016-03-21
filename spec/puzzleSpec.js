@@ -1,8 +1,8 @@
 'use strict';
-var Matrix = require("./../lib/puzzle").Puzzle,
+var Puzzle = require("./../lib/puzzle").Puzzle,
     _ = require("underscore");
 
-describe("matrix", function() {
+describe("Puzzle", function() {
     describe("initialization", function() {
         it("should instantiate fields properly and ignore empty fields", function() {
             var expectedValuesWithNeighbours = {
@@ -13,7 +13,7 @@ describe("matrix", function() {
                 ], rowCount: 2
             };
 
-            var actual = new Matrix([
+            var actual = new Puzzle([
                 ["a", "f"],
                 ["", "e"]
             ]);
@@ -36,7 +36,7 @@ describe("matrix", function() {
                 ], rowCount: 2
             };
 
-            var actual = new Matrix([
+            var actual = new Puzzle([
                 [" ", "f"],
                 ["  ", "e"]
             ]);
@@ -51,14 +51,14 @@ describe("matrix", function() {
             expect(actual.rowCount).toEqual(expectedValuesWithNeighbours.rowCount);
         });
 
-        it("should handle empty matrix", function() {
-            var actual = new Matrix([]);
+        it("should handle empty puzzle", function() {
+            var actual = new Puzzle([]);
             expect(actual.rows).toEqual([]);
             expect(actual.rowCount).toEqual(0);
         });
 
         it("should put as neighbour each field left, right, below, above", function() {
-            var actual = new Matrix([
+            var actual = new Puzzle([
                 ["a", "b"],
                 ["c", "d"]
             ]);
@@ -95,7 +95,7 @@ describe("matrix", function() {
         });
 
         it("should not add field of next +1 row as neighbour", function() {
-            var actual = new Matrix([
+            var actual = new Puzzle([
                 ["a"],
                 [],
                 ["c"]
@@ -107,7 +107,7 @@ describe("matrix", function() {
         });
 
         it("should not add field of same row, two right as neighbour", function() {
-            var actual = new Matrix([
+            var actual = new Puzzle([
                 ["a", "", "a"]
             ]);
             var a = actual.rows[0][0];
@@ -117,10 +117,10 @@ describe("matrix", function() {
     });
 
     describe("findPossibleTokens", function() {
-        it("should find expected tokens for a 2 x 2 matrix", function() {
-            var matrix = new Matrix([["a", "l"], ["k", "o"]]);
+        it("should find expected tokens for a 2 x 2 puzzle", function() {
+            var puzzle = new Puzzle([["a", "l"], ["k", "o"]]);
 
-            var possibleTokens = matrix.findPossibleTokens(4);
+            var possibleTokens = puzzle.findPossibleTokens(4);
             var possibleTokensAsSet = new Set(possibleTokens);
 
             expect(possibleTokens.length).toEqual(4 * 6);
@@ -132,40 +132,40 @@ describe("matrix", function() {
             expect(possibleTokensAsSet.size).toEqual(possibleTokens.length);
 
 
-            expect(matrix.findPossibleTokens(2).length).toEqual(4 * 3);
+            expect(puzzle.findPossibleTokens(2).length).toEqual(4 * 3);
         });
     });
 
     describe("findDictionaryWords", function() {
         it("should find \'spaß\'", function() {
-            var matrix = new Matrix([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast", "spaß"]);
-            var dictionaryWords = matrix.findDictionaryWords(4);
+            var puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast", "spaß"]);
+            var dictionaryWords = puzzle.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
 
-            matrix = new Matrix([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast"]);
-            dictionaryWords = matrix.findDictionaryWords(4);
+            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast"]);
+            dictionaryWords = puzzle.findDictionaryWords(4);
             expect(dictionaryWords).not.toContain("spaß");
             expect(dictionaryWords.length).toEqual(0);
 
-            matrix = new Matrix([["s", "p"], ["a", "ß"]], ["aps", "kiffer", "ast", "spaß"]);
-            dictionaryWords = matrix.findDictionaryWords(3);
+            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["aps", "kiffer", "ast", "spaß"]);
+            dictionaryWords = puzzle.findDictionaryWords(3);
             expect(dictionaryWords).toContain("aps");
             expect(dictionaryWords.length).toEqual(1);
         });
 
         it("should not be case sensitive", function() {
-            var Spaß = new Matrix([["S", "p"], ["a", "ß"]], ["spaß"]);
+            var Spaß = new Puzzle([["S", "p"], ["a", "ß"]], ["spaß"]);
             dictionaryWords = Spaß.findDictionaryWords(4);
             expect(dictionaryWords.length).toEqual(1);
             expect(dictionaryWords).toContain("Spaß");
 
-            var SPAß = new Matrix([["S", "P"], ["A", "ß"]], ["spaß"]);
+            var SPAß = new Puzzle([["S", "P"], ["A", "ß"]], ["spaß"]);
             var dictionaryWords = SPAß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("SPAß");
             expect(dictionaryWords.length).toEqual(1);
 
-            var spaß = new Matrix([["s", "p"], ["a", "ß"]], ["spaß"]);
+            var spaß = new Puzzle([["s", "p"], ["a", "ß"]], ["spaß"]);
             dictionaryWords = spaß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
