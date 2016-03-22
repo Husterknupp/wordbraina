@@ -1,3 +1,4 @@
+/*global describe:false, it:false*/
 "use strict";
 var Path = require("./../lib/path").Path;
 

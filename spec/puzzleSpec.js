@@ -1,3 +1,4 @@
+/*global describe:false, it:false*/
 "use strict";
 var Puzzle = require("./../lib/puzzle").Puzzle,
     _ = require("underscore");
