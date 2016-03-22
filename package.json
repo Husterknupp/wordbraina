@@ -33,11 +33,5 @@
     "static",
     "express"
   ],
-  "license": "todo",
-  "eslintConfig": {
-    "env": {
-      "node": true,
-      "jasmine": true
-    }
-  }
+  "license": "todo"
 }
