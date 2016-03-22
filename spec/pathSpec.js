@@ -1,4 +1,4 @@
-/*global describe:false, it:false*/
+/*global describe:false, it:false, expect:false*/
 "use strict";
 var Path = require("./../lib/path").Path;
 
