@@ -19,22 +19,28 @@ readline.createInterface({
 });
 
 
+/*global __dirname:false*/
 /*  ====================
     EXPRESS APP SETTINGS
     ====================
  */
 app.set("port", (process.env.PORT || 5000));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + '/public'));
 
 app.listen(app.get("port"), function () { // heroku transparency
     console.log("Node app is running on port", app.get("port"));
 });
 
-
 /*  ========================
     ENDPOINTS AND CONTROLLER
     ========================
  */
+app.get('*', function(req, res) {
+    // load the single view file (angular will handle the page changes on the front-end)
+    res.sendfile('./public/index.html');
+});
+
 app.get("/", function (req, res) {
     res.send("<h1>Hello, World!</h1>");
 });

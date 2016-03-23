@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html ng-app="wordbraina" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>wordbraina</title>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+    <script type="text/javascript" src="angular.min.js"></script>
+    <script type="text/javascript" src="wordbraina.js"></script>
+</head>
+<body ng-controller="puzzleController as vm">
+<div class="container">
+    <h1 align="center">Wordbraina</h1>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <textarea class="form-control" rows="3" ng-model="vm.puzzle"
+                      placeholder="Puzzle characters here.."></textarea>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4">
+            <button ng-click="vm.findWords()" type="button" class="btn btn-primary">
+                Find words
+            </button>
+        </div>
+        <div class="col-xs-4">
+            Za up-down-button
+        </div>
+        <div class="col-xs-4">
+            characters
+        </div>
+    </div>
+
+    <h4>Found in the puzzle</h4>
+    <table class="table table-striped">
+        <tr ng-repeat="word in vm.words">
+            <td>{{word}}</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
