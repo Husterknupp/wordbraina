@@ -36,13 +36,14 @@ app.listen(app.get("port"), function () { // heroku transparency
     ENDPOINTS AND CONTROLLER
     ========================
  */
-app.get('*', function(req, res) {
+//app.get('*', function(req, res) {
     // load the single view file (angular will handle the page changes on the front-end)
-    res.sendfile('./public/index.html');
-});
+    //res.sendfile('./public/index.html');
+//});
 
 app.get("/", function (req, res) {
-    res.send("<h1>Hello, World!</h1>");
+    //res.send("<h1>Hello, World!</h1>");
+    res.sendFile('./public/index.html');
 });
 
 app.get("/puzzles/:id", function (req, res) {
