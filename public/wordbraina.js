@@ -27,10 +27,10 @@ angular.module('wordbraina', [])
                 $http.get("/puzzles/" + puzzleId + "/words?length=" + vm.wordLength).then(function(response) {
                     vm.words = response.data;
                 }, function(response) {
-                    alert(":-/  GET didnt work. Here's what I got: " + response);
+                    alert(":-/  GET didnt work. Here's what I got: " + response.data);
                 })
             }, function(response) {
-                alert(":-/  POST didnt work. Here's what I got: " + response);
+                alert(":-/  POST didnt work. Here's what I got: " + response.data);
             });
 
         };

@@ -2,6 +2,7 @@
 <html ng-app="wordbraina" lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>wordbraina</title>
     <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
     <script type="text/javascript" src="angular.min.js"></script>
@@ -13,30 +14,33 @@
     <hr>
     <div class="row">
         <div class="col-xs-12">
-            <textarea class="form-control" rows="3" ng-model="vm.puzzle"
+            <textarea class="form-control" rows="5" ng-model="vm.puzzle"
                       placeholder="Puzzle characters here.."></textarea>
         </div>
     </div>
+    <p></p>
+
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-xs-6 col-md-4">
             <button ng-click="vm.findWords()" type="button" class="btn btn-primary">
                 Find words
             </button>
         </div>
-        <div class="col-xs-4">
-            <input type="tel" value="4" ng-model="vm.wordLength">
-        </div>
-        <div class="col-xs-4">
-            characters
+        <div class="col-xs-6 col-md-8">
+            <input type="tel" id="wordLength" value="4" ng-model="vm.wordLength" style="width: 26px;">
+            <label for="wordLength">characters</label>
         </div>
     </div>
+    <p></p>
 
-    <h4>Found in the puzzle</h4>
-    <table class="table table-striped">
-        <tr ng-repeat="word in vm.words">
-            <td>{{word}}</td>
-        </tr>
-    </table>
+    <div class="row">
+        <h4>Found in the puzzle</h4>
+        <table class="table table-striped">
+            <tr ng-repeat="word in vm.words">
+                <td>{{word}}</td>
+            </tr>
+        </table>
+    </div>
 </div>
 </body>
 </html>
