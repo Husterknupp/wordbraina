@@ -25,24 +25,24 @@ angular.module('wordbraina', [])
             var puzzleId;
             var payload = {lines: lines};
             vm.requestLoading = true;
-            $http.post("/puzzles", payload).then(function(response) {
-                puzzleId = response.data;
-                $http.get("/puzzles/" + puzzleId + "/words?length=" + vm.wordLength).then(function(response) {
-                    vm.requestLoading = false;
-                    vm.words = response.data;
-                    if (vm.words.length <= 0) {
-                        vm.noWordsFound = true;
-                        $timeout(function() {
-                            vm.noWordsFound = false;
-                        }, 3500);
-                    }
-                }, function(response) {
-                    vm.requestLoading = false;
-                    alert(":-/  GET didnt work. Here's what I got: " + response.data);
-                })
-            }, function(response) {
+            $http.post("/puzzles", payload).then(function(response1) {
+                return $http.get("/puzzles/" + response1.data + "/words?length=" + vm.wordLength);
+            }, function(reject1) {
                 vm.requestLoading = false;
-                alert(":-/  POST didnt work. Here's what I got: " + response.data);
+                alert(":-/  POST didnt work. Here's what I got: " + reject1.data);
+                return "errorrrrrr";
+            }).then(function(response2) {
+                vm.requestLoading = false;
+                vm.words = response2.data;
+                if (vm.words.length <= 0) {
+                    vm.noWordsFound = true;
+                    $timeout(function() {
+                        vm.noWordsFound = false;
+                    }, 3500);
+                }
+            }, function(reject2) {
+                vm.requestLoading = false;
+                alert(":-/  GET didnt work. Here's what I got: " + reject2.data);
             });
         };
     }]);
