@@ -8,10 +8,9 @@ angular.module('wordbraina', [])
         vm.requestLoading = false;
         vm.noWordsFound = false;
 
-        var separateCharacters = function(line, totalCharacters) {
+        var separateCharacters = function(line) {
             var result = [];
             for (var i = 0; i < line.length; i++) {
-                totalCharacters++;
                 result.push(line[i]);
             }
             return result;
@@ -21,10 +20,15 @@ angular.module('wordbraina', [])
             var lines = [];
             var totalCharacters = 0;
             vm.puzzle.split("\n").forEach(function(line) {
-                lines.push(separateCharacters(line), totalCharacters);
+                if (line.length > 0) {
+                    var characters = separateCharacters(line);
+                    totalCharacters += characters.length;
+                    lines.push(characters);
+                }
             });
             if (totalCharacters < vm.wordLength) {
-                alert(`Puzzle characters (${totalCharacters}) must be more than or equal word length (${vm.wordLength})`);
+                alert("Puzzle characters (" + totalCharacters + ") " +
+                    "must be more than or equal word length (" + vm.wordLength + ")");
                 return;
             }
 
