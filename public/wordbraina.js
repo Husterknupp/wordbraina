@@ -1,5 +1,5 @@
 angular.module('wordbraina', [])
-    .controller('puzzleController', ['$http', '$timeout', function($http, $timeout) {
+    .controller('puzzleController', ['$http', '$timeout', '$scope', function($http, $timeout, $scope) {
         var vm = this;
         vm.puzzle = "";
         vm.puzzleSplit = [];
@@ -7,6 +7,30 @@ angular.module('wordbraina', [])
         vm.wordLength = 4;
         vm.requestLoading = false;
         vm.noWordsFound = false;
+        vm.puzzleId = null;
+
+        activate();
+
+        function activate() {
+            new WebSocket("ws://localhost:5000/puzzles-ws").onmessage = function(msg) {
+                var data = JSON.parse(msg.data);
+                if (data.type !== "solution") {
+                    return;
+                }
+
+                $scope.$apply(function() {
+                    // http://stackoverflow.com/questions/27568151/angularjs-using-apply-without-scope
+                    vm.requestLoading = false;
+                    vm.words = data.solution;
+                    if (vm.words.length <= 0) {
+                        vm.noWordsFound = true;
+                        $timeout(function() {
+                            vm.noWordsFound = false;
+                        }, 3500);
+                    }
+                });
+            }
+        }
 
         var separateCharacters = function(line) {
             var result = [];
@@ -17,13 +41,13 @@ angular.module('wordbraina', [])
         };
 
         vm.findWords = function() {
-            var lines = [];
+            vm.lines = [];
             var totalCharacters = 0;
             vm.puzzle.split("\n").forEach(function(line) {
                 if (line.length > 0) {
                     var characters = separateCharacters(line);
                     totalCharacters += characters.length;
-                    lines.push(characters);
+                    vm.lines.push(characters);
                 }
             });
             if (totalCharacters < vm.wordLength) {
@@ -32,24 +56,17 @@ angular.module('wordbraina', [])
                 return;
             }
 
-            var puzzleId;
-            var payload = {lines: lines};
+            var payload = {lines: vm.lines, length: vm.wordLength};
             vm.requestLoading = true;
             $http.post("/puzzles", payload).then(function(response1) {
-                return $http.get("/puzzles/" + response1.data + "/words?length=" + vm.wordLength);
+                vm.puzzleId = response1.data;
+                return $http.post("/puzzles/" + response1.data + "/findWords?length=" + vm.wordLength, {});
             }, function(reject1) {
                 vm.requestLoading = false;
                 alert(":-/  POST didnt work. Here's what I got: " + reject1.data);
                 return "errorrrrrr";
             }).then(function(response2) {
-                vm.requestLoading = false;
-                vm.words = response2.data;
-                if (vm.words.length <= 0) {
-                    vm.noWordsFound = true;
-                    $timeout(function() {
-                        vm.noWordsFound = false;
-                    }, 3500);
-                }
+                console.log('POST succeeded. Lets wait for the webSocket to fire');
             }, function(reject2) {
                 vm.requestLoading = false;
                 alert(":-/  GET didnt work. Here's what I got: " + reject2.data);

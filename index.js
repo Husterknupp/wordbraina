@@ -4,6 +4,7 @@ var express = require("express"),
     uuid = require("uuid"),
     readline = require("readline"),
     fs = require("fs"),
+    expressWs = require('express-ws')(app), // IntelliJ doesnt know its required
     Puzzle = require("./lib/puzzle").Puzzle;
 
 /*  ===================
@@ -17,6 +18,7 @@ readline.createInterface({
 }).on("line", (word) => {
     dictionary.push(word.toLowerCase());
 });
+var webSocket = null;
 
 
 /*global __dirname:false*/
@@ -36,14 +38,14 @@ app.listen(app.get("port"), function () { // heroku transparency
     ENDPOINTS AND CONTROLLER
     ========================
  */
-//app.get('*', function(req, res) {
-    // load the single view file (angular will handle the page changes on the front-end)
-    //res.sendfile('./public/index.html');
-//});
-
 app.get("/", function (req, res) {
     //res.send("<h1>Hello, World!</h1>");
     res.sendFile('./public/index.html');
+});
+
+app.ws("/puzzles-ws", function(ws, req) {
+    console.log('/puzzles-ws');
+    webSocket = ws;
 });
 
 app.get("/puzzles/:id", function (req, res) {
@@ -60,11 +62,24 @@ app.get("/puzzles/:id", function (req, res) {
     res.send(puzzleNoNeighbours);
 });
 
-app.post("/puzzles", function (req, res) {
+app.post("/puzzles", function(req, res) {
     var puzzle = new Puzzle(req.body.lines, dictionary);
     var id = uuid.v1();
     puzzles[id] = puzzle;
     res.send(id);
+});
+
+app.post("/puzzles/:id/findWords", function (req, res) {
+    if (!puzzles.hasOwnProperty(req.params.id)) {
+        res.status(404).send("no puzzle for id " + req.params.id);
+        return;
+    }
+    if(!req.query.length) {
+        res.status(400).send("query param length required");
+        return;
+    }
+    res.send("Starting word finding. Please come back later");
+    puzzles[req.params.id].findDictionaryWords(req.query.length, webSocket, req.params.id);
 });
 
 app.get("/puzzles/:id/words", function (req, res) {
@@ -76,7 +91,11 @@ app.get("/puzzles/:id/words", function (req, res) {
         res.status(400).send("query param length required");
         return;
     }
-    var result = puzzles[req.params.id].findDictionaryWords(req.query.length);
+    var result = puzzles[req.params.id].solutions[req.query.length];
+    if (!result) {
+        res.status(404).send("no solution for this wordLength computed yet.");
+        return;
+    }
     res.send(result);
 });
 

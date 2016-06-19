@@ -17,7 +17,7 @@ request
         var puzzleId = res.text;
         console.log("Status code 200 - puzzle id: " + puzzleId);
 
-        // #1 ASSERT MATRIX WAS BUILT PROPERLY
+        // #1 ASSERT PUZZLE WAS BUILT PROPERLY
         url = "localhost:5000/puzzles/" + puzzleId;
         console.log("[PUZZLE]: Get puzzle from " + url);
         request
@@ -37,7 +37,20 @@ request
                 console.log("[PUZZLE]: Result is as expected. G O O D !!");
             });
 
-        // #2 ASSERT WORDS ARE FOUND PROPERLY
+        // #2 TRIGGER WORD FINDING
+        url = "localhost:5000/puzzles/" + puzzleId + "/findWords?length=4";
+        console.log("[TRIGGER]: Trigger word finding " + url);
+        request
+            .post(url)
+            .end(function(err, res) {
+                if (res.statusCode !== 200) {
+                    console.log(res.data);
+                    throw "[TRIGGER]: Wrong status code " + res.statusCode;
+                }
+                console.log("[TRIGGER]: Word finding triggered");
+            });
+
+        // #3 ASSERT WORDS ARE FOUND PROPERLY
         url = "localhost:5000/puzzles/" + puzzleId + "/words?length=4";
         console.log("[WORDS]: Get words from " + url);
         request
