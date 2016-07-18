@@ -41,6 +41,7 @@ angular.module('wordbraina', [])
         };
 
         vm.findWords = function() {
+            alert("v1");
             vm.lines = [];
             var totalCharacters = 0;
             vm.puzzle.split("\n").forEach(function(line) {

@@ -27,7 +27,8 @@ readline.createInterface({
  */
 app.set("port", (process.env.PORT || 5000));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/public'));
+var oneDay = 86400000;
+app.use(express.static(__dirname + '/public', { maxAge: oneDay }));
 
 app.listen(app.get("port"), function () { // heroku transparency
     console.log("Node app is running on port", app.get("port"));
@@ -38,8 +39,8 @@ app.listen(app.get("port"), function () { // heroku transparency
     ========================
  */
 app.get("/", function (req, res) {
-    //res.send("<h1>Hello, World!</h1>");
-    res.sendFile('./public/index.html');
+    // max-age property of the Cache-Control defaults to 0ms
+    res.sendFile('./public/index-v1.html');
 });
 
 app.ws("/puzzles-ws", function(ws, req) {
