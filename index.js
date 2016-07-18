@@ -18,7 +18,6 @@ readline.createInterface({
 }).on("line", (word) => {
     dictionary.push(word.toLowerCase());
 });
-var webSocket = null;
 
 
 /*global __dirname:false*/
@@ -45,7 +44,6 @@ app.get("/", function (req, res) {
 
 app.ws("/puzzles-ws", function(ws, req) {
     console.log('/puzzles-ws');
-    webSocket = ws;
 });
 
 app.get("/puzzles/:id", function (req, res) {
@@ -79,7 +77,8 @@ app.post("/puzzles/:id/findWords", function (req, res) {
         return;
     }
     res.send("Starting word finding. Please come back later");
-    puzzles[req.params.id].findDictionaryWords(req.query.length, webSocket, req.params.id);
+    var clients = expressWs.getWss('/puzzles-ws').clients;
+    puzzles[req.params.id].findDictionaryWords(req.query.length, clients, req.params.id);
 });
 
 app.get("/puzzles/:id/words", function (req, res) {
