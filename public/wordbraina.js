@@ -12,8 +12,12 @@ angular.module('wordbraina', [])
         activate();
 
         function activate() {
-            alert("v2");
-            new WebSocket("ws://" + window.location.host + "/puzzles-ws").onmessage = function(msg) {
+            alert("v2\nhost: " + window.location.host);
+            var webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
+            webSocket.onopen = function(msg) {
+                alert('onopen');
+            };
+            webSocket.onmessage = function(msg) {
                 var data = JSON.parse(msg.data);
                 alert("received ws message\n" + data.type + "\n" + data.id);
                 if (data.type !== "solution" || data.id != vm.puzzleId) {
