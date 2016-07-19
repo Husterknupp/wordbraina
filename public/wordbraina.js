@@ -13,7 +13,7 @@ angular.module('wordbraina', [])
 
         function activate() {
             alert("v2\nhost: " + window.location.host);
-            this.webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
+            this.webSocket = new WebSocket("wss://" + window.location.host + "/puzzles-ws");
             this.webSocket.onmessage = function(evt) { setTimeout(function() {vm.onMessageHandler(evt);}, 0); };
             this.webSocket.onopen = function(evt) { setTimeout(function() {vm.onOpenHandler(evt);}, 0); };
 
