@@ -14,9 +14,15 @@ angular.module('wordbraina', [])
         function activate() {
             alert("v2\nhost: " + window.location.host);
             this.webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
+            this.webSocket.onmessage = function(evt) { setTimeout(function() {vm.onMessageHandler(evt);}, 0); };
+            this.webSocket.onopen = function(evt) { setTimeout(function() {vm.onOpenHandler(evt);}, 0); };
+
+            /*
             this.webSocket.onopen = function(msg) {
                 alert('onopen');
             };
+            */
+            /*
             this.webSocket.onmessage = function(msg) {
                 var data = JSON.parse(msg.data);
                 alert("received ws message\n" + data.type + "\n" + data.id);
@@ -36,7 +42,32 @@ angular.module('wordbraina', [])
                     }
                 });
             }
+            */
         }
+
+        vm.onOpenHandler = function(msg) {
+            alert('onopen');
+        };
+
+        vm.onMessageHandler = function(msg) {
+            var data = JSON.parse(msg.data);
+            alert("received ws message\n" + data.type + "\n" + data.id);
+            if (data.type !== "solution" || data.id != vm.puzzleId) {
+                return;
+            }
+
+            $scope.$apply(function() {
+                // http://stackoverflow.com/questions/27568151/angularjs-using-apply-without-scope
+                vm.requestLoading = false;
+                vm.words = data.solution;
+                if (vm.words.length <= 0) {
+                    vm.noWordsFound = true;
+                    $timeout(function() {
+                        vm.noWordsFound = false;
+                    }, 3500);
+                }
+            });
+        };
 
         var separateCharacters = function(line) {
             var result = [];
