@@ -12,8 +12,10 @@ angular.module('wordbraina', [])
         activate();
 
         function activate() {
+            alert("v2");
             new WebSocket("ws://" + window.location.host + "/puzzles-ws").onmessage = function(msg) {
                 var data = JSON.parse(msg.data);
+                alert("received ws message\n" + data.type + "\n" + data.id);
                 if (data.type !== "solution" || data.id != vm.puzzleId) {
                     return;
                 }
@@ -41,6 +43,7 @@ angular.module('wordbraina', [])
         };
 
         vm.findWords = function() {
+            alert("findWords");
             vm.lines = [];
             var totalCharacters = 0;
             vm.puzzle.split("\n").forEach(function(line) {
@@ -66,6 +69,7 @@ angular.module('wordbraina', [])
                 alert(":-/  POST didnt work. Here's what I got: " + reject1.data);
                 return "errorrrrrr";
             }).then(function(response2) {
+                alert("POST succeeded. webSocket should fire soon");
                 console.log('POST succeeded. Lets wait for the webSocket to fire');
             }, function(reject2) {
                 vm.requestLoading = false;
