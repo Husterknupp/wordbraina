@@ -38,12 +38,11 @@ app.listen(app.get("port"), function () { // heroku transparency
     ========================
  */
 app.get("/", function (req, res) {
-    //res.send("<h1>Hello, World!</h1>");
     res.sendFile('./public/index.html');
 });
 
 app.ws("/puzzles-ws", function(ws, req) {
-    console.log('/puzzles-ws');
+    console.log('new websocket connected');
 });
 
 app.get("/puzzles/:id", function (req, res) {
@@ -77,8 +76,7 @@ app.post("/puzzles/:id/findWords", function (req, res) {
         return;
     }
     res.send("Starting word finding. Please come back later");
-    var clients = expressWs.getWss('/puzzles-ws').clients;
-    puzzles[req.params.id].findDictionaryWords(req.query.length, clients, req.params.id);
+    puzzles[req.params.id].findDictionaryWords(req.query.length, expressWs.getWss('/puzzles-ws').clients, req.params.id);
 });
 
 app.get("/puzzles/:id/words", function (req, res) {
