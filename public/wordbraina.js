@@ -18,12 +18,12 @@ angular.module('wordbraina', [])
                     vm.webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
                     console.log("ya websocket aint gonna be secure, bro.");
                 }
-            }, 800);
+            }, 2000);
             setTimeout(function() {
                 if (vm.webSocket.readyState != 1) {
                     alert("Could not establish websocket connection. Wordbraina will not work. So sorry")
                 }
-            }, 1600);
+            }, 4000);
             vm.webSocket.onmessage = function(evt) { setTimeout(function() {vm.onMessageHandler(evt);}, 0); };
         }
 
