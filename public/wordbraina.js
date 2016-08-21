@@ -13,17 +13,18 @@ angular.module('wordbraina', [])
 
         function activate() {
             vm.webSocket = new WebSocket("wss://" + window.location.host + "/puzzles-ws");
-            setTimeout(function() {
-                if (vm.webSocket.readyState != 1) { // 1 means: websocket connection is open
-                    vm.webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
-                    console.log("ya websocket aint gonna be secure, bro.");
-                }
-            }, 2000);
-            setTimeout(function() {
-                if (vm.webSocket.readyState != 1) {
-                    alert("Could not establish websocket connection. Wordbraina will not work. So sorry")
-                }
-            }, 4000);
+            vm.webSocket.onerror = function(event) {
+                console.log("webSocket error. Try to connect without ssl");
+                vm.webSocket = new WebSocket("ws://" + window.location.host + "/puzzles-ws");
+                vm.webSocket.onopen = function() {
+                    console.log("Established webSocket connection. Though, ya webSocket aint gonna be secure, bro.");
+                };
+                vm.webSocket.onmessage = function(evt) { setTimeout(function() {vm.onMessageHandler(evt);}, 0); };
+                vm.webSocket.onerror = function(event) {
+                    alert("Could not establish websocket connection even without ssl. Wordbraina will not work. So sorry")
+                };
+            };
+
             vm.webSocket.onmessage = function(evt) { setTimeout(function() {vm.onMessageHandler(evt);}, 0); };
         }
 
@@ -55,6 +56,11 @@ angular.module('wordbraina', [])
         };
 
         vm.findWords = function() {
+            if (vm.webSocket.readyState != 1) { // 1 means isOpen
+                alert("wordbraina doesn't work. WebSocket connection not established. So sorry.");
+                return;
+            }
+
             vm.lines = [];
             var totalCharacters = 0;
             vm.puzzle.split("\n").forEach(function(line) {
