@@ -12,11 +12,12 @@ var express = require("express"),
     ==================
  */
 var puzzles = {};
-var dictionary = [];
+var dictionary = {};
 readline.createInterface({
     input: fs.createReadStream("dictionary-de")
 }).on("line", (word) => {
-    dictionary.push(word.toLowerCase());
+    // http://stackoverflow.com/questions/7737850/in-js-which-is-faster-objects-in-operator-or-arrays-indexof
+    dictionary[word.toLowerCase()] = null;
 });
 
 
@@ -110,5 +111,5 @@ app.get("/puzzles/:id/tokens", function(req, res) {
 });
 
 app.get("/dictionary/size", function(req, res) {
-    res.send({wordCount: dictionary.length});
+    res.send({wordCount: Object.keys(dictionary).length});
 });

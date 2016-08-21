@@ -145,34 +145,34 @@ describe("Puzzle", function() {
 
     describe("findDictionaryWords", function() {
         it("should find \'spaß\'", function() {
-            var puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast", "spaß"]);
+            var puzzle = new Puzzle([["s", "p"], ["a", "ß"]], {"baum": null, "kiffer": null, "ast": null, "spaß": null});
             var dictionaryWords = puzzle.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
 
-            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["baum", "kiffer", "ast"]);
+            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], {"baum": null, "kiffer": null, "ast": null});
             dictionaryWords = puzzle.findDictionaryWords(4);
             expect(dictionaryWords).not.toContain("spaß");
             expect(dictionaryWords.length).toEqual(0);
 
-            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], ["aps", "kiffer", "ast", "spaß"]);
+            puzzle = new Puzzle([["s", "p"], ["a", "ß"]], {"aps": null, "kiffer": null, "ast": null, "spaß": null});
             dictionaryWords = puzzle.findDictionaryWords(3);
             expect(dictionaryWords).toContain("aps");
             expect(dictionaryWords.length).toEqual(1);
         });
 
         it("should not be case sensitive", function() {
-            var Spaß = new Puzzle([["S", "p"], ["a", "ß"]], ["spaß"]);
+            var Spaß = new Puzzle([["S", "p"], ["a", "ß"]], {"spaß": null});
             var dictionaryWords = Spaß.findDictionaryWords(4);
             expect(dictionaryWords.length).toEqual(1);
             expect(dictionaryWords).toContain("Spaß");
 
-            var SPAß = new Puzzle([["S", "P"], ["A", "ß"]], ["spaß"]);
+            var SPAß = new Puzzle([["S", "P"], ["A", "ß"]], {"spaß": null});
             dictionaryWords = SPAß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("SPAß");
             expect(dictionaryWords.length).toEqual(1);
 
-            var spaß = new Puzzle([["s", "p"], ["a", "ß"]], ["spaß"]);
+            var spaß = new Puzzle([["s", "p"], ["a", "ß"]], {"spaß": null});
             dictionaryWords = spaß.findDictionaryWords(4);
             expect(dictionaryWords).toContain("spaß");
             expect(dictionaryWords.length).toEqual(1);
