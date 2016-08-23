@@ -1,6 +1,6 @@
 {
   "name": "wordbraina",
-  "version": "2.0.0-SNAPSHOT",
+  "version": "2.0.0",
   "description": "A Node.js app for solving word puzzles using Express 4",
   "main": "index.js",
   "scripts": {
@@ -34,5 +34,5 @@
     "static",
     "express"
   ],
-  "license": "todo"
+  "license": "Apache License"
 }
