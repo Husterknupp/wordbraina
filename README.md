@@ -7,13 +7,13 @@ _Deutsch_ Brauchst du Hilfe beim WORDBRAIN Spiel? wordbraina findet alle Wörter
 [![Codacy Badge](https://api.codacy.com/project/badge/grade/be69f532f91f44c1aaa935a20eb92061)](https://www.codacy.com/app/4-23/wordbraina)
 
 ## What?
-[![ui-in-action](https://cloud.githubusercontent.com/assets/1265382/17881498/4fce754c-6906-11e6-8357-646cfb4fdee9.PNG)]
+![ui-in-action](https://cloud.githubusercontent.com/assets/1265382/17881498/4fce754c-6906-11e6-8357-646cfb4fdee9.PNG)
 
 ## How?
  Open https://frozen-dusk-96311.herokuapp.com/
 
 ## Run locally
-- make sure npm version 5.4.1 or higher is installed on your machine
+Make sure ```npm``` version 5.4.1 or higher is installed on your machine
  
  ```git clone https://github.com/Husterknupp/wordbraina.git```
 
@@ -21,5 +21,5 @@ _Deutsch_ Brauchst du Hilfe beim WORDBRAIN Spiel? wordbraina findet alle Wörter
  
  ```npm start```
  
- ## Dependencies
-  node.js for the backend, Express 4.13 and express-ws 2.0 and Angular.js 1.5 for frontend MVC.
+## Dependencies
+ node.js for the backend, Express 4.13 and express-ws 2.0 and Angular.js 1.5 for frontend MVC.
