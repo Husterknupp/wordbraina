@@ -1,0 +1,38 @@
+{
+  "name": "wordbraina",
+  "version": "2.0.0-SNAPSHOT",
+  "description": "A Node.js app for solving word puzzles using Express 4",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jasmine"
+  },
+  "dependencies": {
+    "body-parser": "1.14.2",
+    "express": "4.13.3",
+    "express-ws": "^2.0.0-rc.1",
+    "underscore": "1.8.3",
+    "uuid": "2.0.1"
+  },
+  "devDependencies": {
+    "jasmine": "^2.4.1",
+    "superagent": "^1.7.2"
+  },
+  "engines": {
+    "node": "5.4.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Husterknupp/wordbraina"
+  },
+  "keywords": [
+    "wordbrain",
+    "ios",
+    "games",
+    "apps",
+    "node",
+    "static",
+    "express"
+  ],
+  "license": "todo"
+}

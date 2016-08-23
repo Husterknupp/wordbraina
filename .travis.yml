@@ -1,6 +1,9 @@
-language: java
-jdk:
-  - oraclejdk8
+language: node_js
+node_js:
+  - "node"
+script:
+  - npm test
+  - sh integration-test.sh
 cache:
   directories:
-  - $HOME/.m2
+  - $HOME/.npm
