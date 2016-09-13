@@ -21,5 +21,7 @@ Make sure ```npm``` version 5.4.1 or higher is installed on your machine
  
  ```npm start```
  
+ open ```localhost:5000``` in your browser
+ 
 ## Dependencies
  node.js for the backend, Express 4.13 and express-ws 2.0 and Angular.js 1.5 for frontend MVC.
