@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "jasmine": "^2.4.1",
-    "superagent": "^1.7.2"
+    "superagent": "^6.1.0"
   },
   "engines": {
     "node": "5.4.1"
